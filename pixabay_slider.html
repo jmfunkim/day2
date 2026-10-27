@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pixabay 이미지 슬라이더</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px; font-family: "Malgun Gothic", sans-serif; background: #f4f4f8; color: #222; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0 0 16px; }
+  form { display: grid; gap: 8px; margin-bottom: 16px; }
+  .row { display: flex; gap: 8px; }
+  input { flex: 1; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; min-width: 0; }
+  button { padding: 10px 16px; border: none; border-radius: 8px; background: #4f46e5; color: #fff; font-size: 1rem; cursor: pointer; }
+  button:hover { background: #4338ca; }
+  #status { min-height: 1.4em; color: #666; font-size: .9rem; margin-bottom: 8px; }
+
+  .slider { position: relative; background: #000; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; display: none; }
+  .track { display: flex; height: 100%; transition: transform .4s ease; }
+  .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+  .slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 12px; background: rgba(0,0,0,.55); color: #fff; font-size: .8rem; }
+  .caption a { color: #fff; }
+  .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.85); color: #222; font-size: 1.3rem; padding: 0; }
+  .nav:hover { background: #fff; }
+  #prev { left: 10px; } #next { right: 10px; }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #c7c7d1; padding: 0; }
+  .dot.on { background: #4f46e5; }
+  .count { text-align: center; margin-top: 6px; font-size: .85rem; color: #666; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🖼️ Pixabay 이미지 슬라이더</h1>
+
+  <form id="form">
+    <div class="row">
+      <input id="key" type="password" placeholder="Pixabay API Key" autocomplete="off" required>
+    </div>
+    <div class="row">
+      <input id="q" type="text" placeholder="검색어 (예: 제주도, 감귤, 바다)" required>
+      <button type="submit">검색</button>
+    </div>
+  </form>
+
+  <div id="status"></div>
+
+  <div class="slider" id="slider">
+    <div class="track" id="track"></div>
+    <button class="nav" id="prev" type="button" aria-label="이전">‹</button>
+    <button class="nav" id="next" type="button" aria-label="다음">›</button>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="count" id="count"></div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const PER_PAGE = 10;
+  let index = 0, total = 0;
+
+  // 키는 이 브라우저에만 저장됩니다. 코드에 직접 적지 마세요.
+  try { $('key').value = localStorage.getItem('pixabay_key') || ''; } catch (e) {}
+
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const key = $('key').value.trim();
+    const q = $('q').value.trim();
+    try { localStorage.setItem('pixabay_key', key); } catch (e) {}
+
+    $('status').textContent = '불러오는 중...';
+    const url = 'https://pixabay.com/api/?' + new URLSearchParams({
+      key, q, image_type: 'photo', per_page: PER_PAGE, safesearch: 'true'
+    });
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(res.status === 400 ? 'API Key 또는 요청이 올바르지 않습니다.' :
+                                   res.status === 429 ? '요청 한도를 넘었습니다. 잠시 후 다시 시도하세요.' :
+                                   '오류 (' + res.status + ')');
+      const data = await res.json();
+      if (!data.hits.length) { $('status').textContent = '검색 결과가 없습니다.'; hide(); return; }
+      render(data.hits);
+      $('status').textContent = `"${q}" 검색 결과 ${data.hits.length}장`;
+    } catch (err) {
+      $('status').textContent = '❌ ' + err.message;
+      hide();
+    }
+  });
+
+  function hide() {
+    $('slider').style.display = 'none';
+    $('dots').innerHTML = '';
+    $('count').textContent = '';
+  }
+
+  function render(hits) {
+    total = hits.length; index = 0;
+    $('track').innerHTML = '';
+    $('dots').innerHTML = '';
+
+    hits.forEach((h, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+
+      const img = document.createElement('img');
+      img.src = h.webformatURL;
+      img.alt = h.tags;
+
+      const cap = document.createElement('div');
+      cap.className = 'caption';
+      const link = document.createElement('a');
+      link.href = h.pageURL; link.target = '_blank'; link.rel = 'noopener';
+      link.textContent = 'Pixabay · ' + h.user;
+      cap.append(h.tags + ' — ', link);
+
+      slide.append(img, cap);
+      $('track').append(slide);
+
+      const dot = document.createElement('button');
+      dot.type = 'button'; dot.className = 'dot'; dot.setAttribute('aria-label', (i + 1) + '번째');
+      dot.addEventListener('click', () => go(i));
+      $('dots').append(dot);
+    });
+
+    $('slider').style.display = 'block';
+    go(0);
+  }
+
+  function go(i) {
+    index = (i + total) % total;
+    $('track').style.transform = `translateX(-${index * 100}%)`;
+    [...$('dots').children].forEach((d, n) => d.classList.toggle('on', n === index));
+    $('count').textContent = `${index + 1} / ${total}`;
+  }
+
+  $('prev').addEventListener('click', () => go(index - 1));
+  $('next').addEventListener('click', () => go(index + 1));
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowLeft') go(index - 1);
+    if (e.key === 'ArrowRight') go(index + 1);
+  });
+</script>
+</body>
+</html>

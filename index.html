@@ -91,6 +91,23 @@
   .item .emoji { font-size: 2rem; }
   .item p { margin: 0; font-size: .9rem; color: #4b5563; }
 
+  /* 이미지 검색 슬라이더 */
+  .search { display: flex; gap: 8px; margin-bottom: 8px; }
+  .search input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; }
+  .search button, .nav, .dot { border: none; cursor: pointer; }
+  .search button { padding: 10px 16px; border-radius: 8px; background: var(--orange); color: #fff; font-size: 1rem; }
+  #status { min-height: 1.4em; color: #6b7280; font-size: .9rem; margin-bottom: 8px; }
+  .slider { position: relative; background: #111; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; display: none; margin-bottom: 8px; }
+  .track { display: flex; height: 100%; transition: transform .4s ease; }
+  .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+  .slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 12px; background: rgba(0,0,0,.55); color: #fff; font-size: .8rem; }
+  .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.85); font-size: 1.3rem; padding: 0; }
+  #prev { left: 10px; } #next { right: 10px; }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; padding: 0; }
+  .dot.on { background: var(--orange); }
+
   table { width: 100%; border-collapse: collapse; font-size: .95rem; }
   th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; }
   th { background: var(--sea); color: var(--deep); }
@@ -136,6 +153,19 @@
   </nav>
 
   <section id="citrus">
+    <h2>🖼️ 제주 사진 검색</h2>
+    <form class="search" id="form">
+      <input id="q" type="text" value="제주 감귤" placeholder="검색어 (예: 제주도, 감귤, 바다)" required>
+      <button type="submit">검색</button>
+    </form>
+    <div id="status"></div>
+    <div class="slider" id="slider">
+      <div class="track" id="track"></div>
+      <button class="nav" id="prev" type="button" aria-label="이전">‹</button>
+      <button class="nav" id="next" type="button" aria-label="다음">›</button>
+    </div>
+    <div class="dots" id="dots"></div>
+
     <h2>🍊 대표 특산품 · 감귤류</h2>
     <div class="grid">
       <div class="item"><div class="emoji">🍊</div><h3>감귤</h3><p>새콤달콤, 비타민C 가득. 늦가을부터 겨울에 많이 출하돼요.</p></div>
@@ -198,5 +228,67 @@
   <footer>© 2026 제주 특산품 이야기 · 만든 사람: 김재민 · 🍊🌊🌋</footer>
 
 </div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  let index = 0, total = 0;
+
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const q = $('q').value.trim();
+    $('status').textContent = '불러오는 중...';
+    try {
+      const res = await fetch('/api/pixabay?q=' + encodeURIComponent(q));
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || '오류 (' + res.status + ')');
+      if (!data.hits.length) { $('status').textContent = '검색 결과가 없습니다.'; hide(); return; }
+      render(data.hits);
+      $('status').textContent = `"${q}" 검색 결과 ${data.hits.length}장`;
+    } catch (err) {
+      $('status').textContent = '❌ ' + err.message;
+      hide();
+    }
+  });
+
+  function hide() { $('slider').style.display = 'none'; $('dots').innerHTML = ''; }
+
+  function render(hits) {
+    total = hits.length;
+    $('track').innerHTML = '';
+    $('dots').innerHTML = '';
+    hits.forEach((h, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      const img = document.createElement('img');
+      img.src = h.url; img.alt = h.tags;
+      const cap = document.createElement('div');
+      cap.className = 'caption';
+      const link = document.createElement('a');
+      link.href = h.page; link.target = '_blank'; link.rel = 'noopener';
+      link.style.color = '#fff'; link.textContent = 'Pixabay · ' + h.user;
+      cap.append(h.tags + ' — ', link);
+      slide.append(img, cap);
+      $('track').append(slide);
+
+      const dot = document.createElement('button');
+      dot.type = 'button'; dot.className = 'dot'; dot.setAttribute('aria-label', (i + 1) + '번째');
+      dot.addEventListener('click', () => go(i));
+      $('dots').append(dot);
+    });
+    $('slider').style.display = 'block';
+    go(0);
+  }
+
+  function go(i) {
+    index = (i + total) % total;
+    $('track').style.transform = `translateX(-${index * 100}%)`;
+    [...$('dots').children].forEach((d, n) => d.classList.toggle('on', n === index));
+  }
+
+  $('prev').addEventListener('click', () => go(index - 1));
+  $('next').addEventListener('click', () => go(index + 1));
+
+  $('form').requestSubmit();
+</script>
 </body>
 </html>
