@@ -3,230 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>내 취향 카드</title>
+<title>제주 특산품 이야기</title>
 <style>
   * { box-sizing: border-box; }
+  :root {
+    --orange: #f97316;
+    --deep: #0f766e;
+    --sea: #e6f7f5;
+    --ink: #1f2937;
+    --line: #e5e7eb;
+  }
   body {
     margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: sans-serif;
-    background: #f4f4f8;
-    color: #222;
+    font-family: "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    background: #fffaf3;
+    line-height: 1.6;
   }
+  a { color: inherit; }
 
-  /* 헤더 */
+  .page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 12px;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "header  header"
+      "nav     nav"
+      "section aside"
+      "article aside"
+      "footer  footer";
+  }
+  header  { grid-area: header; }
+  nav     { grid-area: nav; }
+  section { grid-area: section; }
+  article { grid-area: article; }
+  aside   { grid-area: aside; }
+  footer  { grid-area: footer; }
+
   header {
-    background: #4f46e5;
+    background: linear-gradient(135deg, var(--orange), #fb923c);
     color: #fff;
-    padding: 24px 16px;
+    border-radius: 14px;
+    padding: 36px 20px;
     text-align: center;
   }
-  header h1 { margin: 0 0 4px; font-size: 1.6rem; }
-  header p { margin: 0; opacity: .85; font-size: .95rem; }
+  header h1 { margin: 0 0 6px; font-size: 2rem; }
+  header p { margin: 0; font-size: 1.05rem; opacity: .95; }
 
-  /* 네비게이션 메뉴 */
   nav {
     background: #fff;
-    border-bottom: 1px solid #e5e5ee;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
     padding: 8px;
+    display: flex;
+    gap: 6px;
     flex-wrap: wrap;
+    justify-content: center;
   }
   nav a {
     padding: 8px 16px;
-    border-radius: 6px;
-    color: #4f46e5;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
+    color: var(--deep);
   }
-  nav a:hover { background: #eef; }
+  nav a:hover { background: var(--sea); }
 
-  /* 바디 */
-  main {
-    flex: 1;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 24px 16px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .card {
+  section, article, aside {
     background: #fff;
-    border-radius: 12px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    text-align: left;
   }
-  .card h2 { margin: 0 0 12px; font-size: 1.15rem; color: #4f46e5; }
-  .card p { margin: 0 0 8px; color: #444; font-size: .95rem; line-height: 1.5; }
+  h2 { margin: 0 0 14px; font-size: 1.3rem; color: var(--deep); }
+  h3 { margin: 0 0 4px; font-size: 1.05rem; }
 
-  /* 푸터 */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .item {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    background: #fffdf9;
+  }
+  .item .emoji { font-size: 2rem; }
+  .item p { margin: 0; font-size: .9rem; color: #4b5563; }
+
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  th { background: var(--sea); color: var(--deep); }
+  .note { margin: 12px 0 0; font-size: .85rem; color: #6b7280; }
+
+  aside { background: var(--sea); border-color: #b7e4df; }
+  aside h2 { font-size: 1.15rem; }
+  aside ul { margin: 0 0 18px; padding-left: 18px; }
+  aside li { margin-bottom: 6px; font-size: .92rem; }
+
   footer {
-    width: calc(100% - 32px);
-    max-width: 768px;
-    margin: 0 auto 24px;
-    background: #fff;
-    color: #666;
-    text-align: center;
+    background: #1f2937;
+    color: #d1d5db;
+    border-radius: 14px;
     padding: 20px;
-    font-size: .85rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    text-align: center;
+    font-size: .88rem;
+  }
+
+  @media (max-width: 720px) {
+    .page {
+      grid-template-columns: 1fr;
+      grid-template-areas: "header" "nav" "section" "article" "aside" "footer";
+    }
+    header h1 { font-size: 1.6rem; }
   }
 </style>
 </head>
 <body>
+<div class="page">
+
   <header>
-    <h1>🎴 내 취향 카드</h1>
-    <p>내가 좋아하는 것들을 카드로 모아보세요</p>
+    <h1>🍊 제주 특산품 이야기 🌴</h1>
+    <p>바다와 한라산이 키운 제주의 맛, 한 번에 만나보세요</p>
   </header>
 
   <nav>
-    <a href="#">홈</a>
-    <a href="#">음식</a>
-    <a href="#">음악</a>
-    <a href="#">여행</a>
+    <a href="#citrus">감귤류</a>
+    <a href="#sea">바다</a>
+    <a href="#land">땅</a>
+    <a href="#season">제철 달력</a>
+    <a href="#tips">여행 팁</a>
   </nav>
 
-  <main>
-    <section class="card">
-      <h2>🌴 제주대학교에 오신 것을 환영합니다</h2>
-      <p>푸른 바다와 한라산이 품은 대학, 제주대학교입니다.</p>
-      <p>제주의 자연 속에서 꿈을 키우는 배움의 터전입니다.</p>
-      <p>지역과 함께 성장하는 국립대학으로서 책임을 다합니다.</p>
-      <p>열린 마음으로 누구나 환영하는 캠퍼스입니다.</p>
-      <p>배움의 즐거움이 일상이 되는 곳입니다.</p>
-      <p>도전하는 학생에게 길을 열어 드립니다.</p>
-      <p>제주의 미래를 이끌 인재를 길러냅니다.</p>
-      <p>세계로 향하는 첫걸음을 이곳에서 시작하세요.</p>
-      <p>당신의 가능성이 활짝 피어나는 곳입니다.</p>
-      <p>지금, 제주대학교와 함께 새로운 이야기를 써 보세요.</p>
-    </section>
-    <section class="card">
-      <h2>🏫 아름다운 캠퍼스</h2>
-      <p>사계절 푸르른 캠퍼스가 학생들을 맞이합니다.</p>
-      <p>봄에는 벚꽃이 피어 캠퍼스를 분홍빛으로 물들입니다.</p>
-      <p>여름에는 시원한 바람이 나무 그늘을 스쳐 갑니다.</p>
-      <p>가을에는 단풍과 함께 사색의 시간이 찾아옵니다.</p>
-      <p>겨울에는 멀리 눈 덮인 한라산이 보이는 풍경이 펼쳐집니다.</p>
-      <p>산책하기 좋은 길이 곳곳에 이어져 있습니다.</p>
-      <p>친구와 이야기 나누기 좋은 쉼터가 마련되어 있습니다.</p>
-      <p>자연과 건물이 어우러진 편안한 학습 환경입니다.</p>
-      <p>걷기만 해도 마음이 맑아지는 공간입니다.</p>
-      <p>캠퍼스 곳곳이 사진 찍기 좋은 명소가 됩니다.</p>
-    </section>
-    <section class="card">
-      <h2>📚 배움이 있는 곳</h2>
-      <p>다양한 전공에서 폭넓은 학문을 접할 수 있습니다.</p>
-      <p>기초 학문부터 응용 분야까지 균형 있게 배웁니다.</p>
-      <p>이론과 실습을 함께 익히는 교육을 지향합니다.</p>
-      <p>토론과 발표로 생각의 깊이를 키웁니다.</p>
-      <p>교수님과 학생이 가까이 소통하는 수업 분위기입니다.</p>
-      <p>스스로 질문하고 답을 찾는 힘을 길러 드립니다.</p>
-      <p>융합적 사고를 키우는 열린 교육을 추구합니다.</p>
-      <p>현장과 연결된 배움으로 실력을 쌓습니다.</p>
-      <p>자기주도 학습을 응원하는 환경을 제공합니다.</p>
-      <p>배운 것을 삶에 적용하는 지혜를 함께 나눕니다.</p>
-    </section>
-    <section class="card">
-      <h2>🌊 제주만의 특별함</h2>
-      <p>제주의 자연과 문화를 연구하고 가르치는 대학입니다.</p>
-      <p>바다와 섬에 대한 연구를 가까이에서 할 수 있습니다.</p>
-      <p>감귤과 해양 자원 등 지역 특색을 살린 학문을 다룹니다.</p>
-      <p>화산섬 제주의 지질과 생태를 직접 체험하며 배웁니다.</p>
-      <p>제주어와 전통문화를 소중히 이어 갑니다.</p>
-      <p>관광과 환경이 함께하는 지속 가능한 미래를 고민합니다.</p>
-      <p>청정 자연 속에서 연구에 몰입할 수 있습니다.</p>
-      <p>제주가 가진 이야기가 학문의 소재가 됩니다.</p>
-      <p>섬이라는 환경이 만드는 독창적인 시각을 가집니다.</p>
-      <p>제주에서만 얻을 수 있는 경험이 졸업 후에도 남습니다.</p>
-    </section>
-    <section class="card">
-      <h2>🤝 함께하는 공동체</h2>
-      <p>서로를 존중하고 응원하는 따뜻한 공동체입니다.</p>
-      <p>동아리 활동으로 취미와 우정을 함께 키웁니다.</p>
-      <p>봉사 활동으로 지역사회에 온기를 전합니다.</p>
-      <p>선후배가 이끌어 주고 밀어 주는 문화가 있습니다.</p>
-      <p>다양한 배경의 친구들을 만나는 기회가 열려 있습니다.</p>
-      <p>축제 기간에는 캠퍼스 전체가 하나로 어우러집니다.</p>
-      <p>함께 웃고 함께 성장하는 시간이 쌓입니다.</p>
-      <p>혼자가 아니라 우리라는 힘을 배웁니다.</p>
-      <p>학생의 목소리에 귀 기울이는 대학입니다.</p>
-      <p>대학 생활이 평생의 추억이 되도록 돕습니다.</p>
-    </section>
-    <section class="card">
-      <h2>🌏 세계로 열린 대학</h2>
-      <p>국제 교류로 넓은 세상을 만날 수 있습니다.</p>
-      <p>해외 대학과의 교류 프로그램을 통해 시야를 넓힙니다.</p>
-      <p>외국인 유학생과 함께 공부하는 글로벌 캠퍼스입니다.</p>
-      <p>언어와 문화의 벽을 넘는 경험을 쌓습니다.</p>
-      <p>교환학생으로 새로운 도전을 시작해 보세요.</p>
-      <p>세계 속의 제주를 알리는 인재로 성장합니다.</p>
-      <p>다양한 문화를 이해하는 열린 마음을 기릅니다.</p>
-      <p>국제 감각을 갖춘 전문가를 꿈꾸는 곳입니다.</p>
-      <p>작은 섬에서 큰 세계로 나아갈 수 있습니다.</p>
-      <p>글로벌 무대에서 빛날 당신을 응원합니다.</p>
-    </section>
-    <section class="card">
-      <h2>🔬 연구와 혁신</h2>
-      <p>호기심이 발견으로 이어지는 연구 환경을 만듭니다.</p>
-      <p>학부생도 연구에 참여할 수 있는 기회를 넓혀 갑니다.</p>
-      <p>새로운 아이디어를 존중하고 격려합니다.</p>
-      <p>실험과 탐구를 통해 문제 해결력을 기릅니다.</p>
-      <p>지역 문제를 해결하는 실용적 연구를 지향합니다.</p>
-      <p>산업체와 협력해 현장에 필요한 기술을 연구합니다.</p>
-      <p>창의적 도전이 환영받는 분위기입니다.</p>
-      <p>작은 질문 하나가 큰 성과로 이어집니다.</p>
-      <p>미래 사회를 준비하는 연구를 이어 갑니다.</p>
-      <p>혁신은 제주대학교의 일상입니다.</p>
-    </section>
-    <section class="card">
-      <h2>💼 꿈을 향한 진로 지원</h2>
-      <p>취업과 진로를 함께 고민해 주는 지원이 있습니다.</p>
-      <p>자기소개서와 면접 준비를 돕는 프로그램을 운영합니다.</p>
-      <p>선배들의 진로 이야기를 듣는 기회를 마련합니다.</p>
-      <p>자격증과 역량 강화를 응원합니다.</p>
-      <p>창업을 꿈꾸는 학생을 위한 지원도 이어 갑니다.</p>
-      <p>진로 상담으로 나에게 맞는 길을 찾아보세요.</p>
-      <p>대학원 진학과 연구자의 길도 안내합니다.</p>
-      <p>지역 기업과의 연결로 기회를 넓힙니다.</p>
-      <p>졸업 후에도 든든한 선후배 네트워크가 함께합니다.</p>
-      <p>당신의 꿈에 한 걸음 더 가까워지도록 돕겠습니다.</p>
-    </section>
-    <section class="card">
-      <h2>🎉 즐거운 대학 생활</h2>
-      <p>공부만큼 즐거운 경험도 중요하게 생각합니다.</p>
-      <p>체육 활동과 문화 행사로 활력을 더합니다.</p>
-      <p>공연과 전시를 즐길 수 있는 문화 공간이 있습니다.</p>
-      <p>캠퍼스 맛집과 카페에서 여유로운 시간을 보내 보세요.</p>
-      <p>주말에는 제주 곳곳으로 떠나는 여행도 즐길 수 있습니다.</p>
-      <p>바다와 오름이 가까워 휴식하기 좋습니다.</p>
-      <p>청춘의 한 페이지를 가장 아름답게 채워 보세요.</p>
-      <p>웃음이 끊이지 않는 대학 생활을 응원합니다.</p>
-      <p>일과 삶의 균형을 배우는 시간입니다.</p>
-      <p>스무 살의 낭만이 제주에서 완성됩니다.</p>
-    </section>
-    <section class="card">
-      <h2>🍊 제주대학교에서 만나요</h2>
-      <p>당신을 기다리는 제주대학교입니다.</p>
-      <p>새내기의 설렘을 환영합니다.</p>
-      <p>편입생과 대학원생도 따뜻하게 맞이합니다.</p>
-      <p>입학 정보는 공식 홈페이지에서 확인해 주세요.</p>
-      <p>캠퍼스 투어로 직접 분위기를 느껴 보세요.</p>
-      <p>궁금한 점은 언제든지 문의해 주세요.</p>
-      <p>제주의 바람처럼 자유롭게 꿈을 펼치세요.</p>
-      <p>제주의 햇살처럼 따뜻하게 함께하겠습니다.</p>
-      <p>제주의 바다처럼 넓은 미래를 약속합니다.</p>
-      <p>🍊 제주대학교, 당신의 내일을 응원합니다! 🍊</p>
-    </section>
-  </main>
+  <section id="citrus">
+    <h2>🍊 대표 특산품 · 감귤류</h2>
+    <div class="grid">
+      <div class="item"><div class="emoji">🍊</div><h3>감귤</h3><p>새콤달콤, 비타민C 가득. 늦가을부터 겨울에 많이 출하돼요.</p></div>
+      <div class="item"><div class="emoji">⛰️</div><h3>한라봉</h3><p>한라산을 닮은 꼭지. 당도가 높고 과육이 부드러워요.</p></div>
+      <div class="item"><div class="emoji">🌸</div><h3>천혜향</h3><p>향이 좋고 껍질이 얇아 즙이 풍부해요.</p></div>
+      <div class="item"><div class="emoji">❤️</div><h3>레드향</h3><p>붉은빛 껍질에 진한 단맛, 선물용으로 인기예요.</p></div>
+      <div class="item"><div class="emoji">✨</div><h3>황금향</h3><p>황금빛 껍질과 은은한 단맛이 매력이에요.</p></div>
+      <div class="item"><div class="emoji">🍋</div><h3>카라향</h3><p>껍질이 얇아 까먹기 쉽고 새콤달콤해요.</p></div>
+    </div>
+  </section>
 
-  <footer>© 2026 내 취향 카드 · 만든 사람: 김재민</footer>
+  <article id="sea">
+    <h2>🐟 바다 · 🐖 땅의 특산품</h2>
+    <div id="land" class="grid">
+      <div class="item"><div class="emoji">🐠</div><h3>옥돔</h3><p>구이나 국으로 먹는 담백한 제주 대표 생선.</p></div>
+      <div class="item"><div class="emoji">🐟</div><h3>갈치</h3><p>은빛 비늘의 갈치조림·갈치구이.</p></div>
+      <div class="item"><div class="emoji">🦑</div><h3>한치</h3><p>여름 밤바다의 주인공, 회와 물회로.</p></div>
+      <div class="item"><div class="emoji">🐚</div><h3>전복·성게</h3><p>해녀가 건져 올린 고소한 바다의 맛.</p></div>
+      <div class="item"><div class="emoji">🐷</div><h3>흑돼지</h3><p>쫄깃하고 고소한 육질의 근고기·오겹살.</p></div>
+      <div class="item"><div class="emoji">🍠</div><h3>고구마·메밀</h3><p>화산토에서 자라 달고 구수해요.</p></div>
+    </div>
+    <div id="season" style="margin-top:20px">
+    <h2>📅 제철 달력</h2>
+    <table>
+      <tr><th>계절</th><th>제철 특산물</th></tr>
+      <tr><td>🌸 봄</td><td>유채꿀, 한라봉(막바지), 성게</td></tr>
+      <tr><td>☀️ 여름</td><td>한치, 애플망고, 갈치</td></tr>
+      <tr><td>🍂 가을</td><td>조생 감귤, 고구마, 메밀</td></tr>
+      <tr><td>❄️ 겨울</td><td>감귤, 한라봉, 천혜향, 당근</td></tr>
+    </table>
+    <p class="note">출하 시기는 해마다 날씨와 재배 방식에 따라 달라질 수 있어요.</p>
+    </div>
+  </article>
+
+  <aside id="tips">
+    <h2>🌦️ 여행 팁</h2>
+    <ul>
+      <li>날씨 변화가 잦아 일기예보를 꼭 확인하세요.</li>
+      <li>바람이 강하니 바람막이를 챙기세요.</li>
+      <li>파도가 높으면 바다 체험이 취소될 수 있어요.</li>
+      <li>자외선이 강하니 선크림은 필수!</li>
+    </ul>
+    <h2>🎡 체험 장소</h2>
+    <ul>
+      <li>🧺 감귤 따기 체험 농장</li>
+      <li>🍵 녹차밭 산책</li>
+      <li>🤿 해녀 문화 체험</li>
+      <li>🥾 오름 트레킹</li>
+      <li>🏮 동문시장 · 올레시장 투어</li>
+    </ul>
+    <h2>🎁 기념품</h2>
+    <ul>
+      <li>감귤 초콜릿 · 쿠키</li>
+      <li>오메기떡 · 오메기술</li>
+      <li>유채꿀 · 감귤 비누</li>
+    </ul>
+  </aside>
+
+
+  <footer>© 2026 제주 특산품 이야기 · 만든 사람: 김재민 · 🍊🌊🌋</footer>
+
+</div>
 </body>
 </html>

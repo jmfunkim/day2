@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제주 특산품 이야기</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --orange: #f97316;
+    --deep: #0f766e;
+    --sea: #e6f7f5;
+    --ink: #1f2937;
+    --line: #e5e7eb;
+  }
+  body {
+    margin: 0;
+    font-family: "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    background: #fffaf3;
+    line-height: 1.6;
+  }
+  a { color: inherit; }
+
+  .page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 12px;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "header  header"
+      "nav     nav"
+      "section aside"
+      "article aside"
+      "footer  footer";
+  }
+  header  { grid-area: header; }
+  nav     { grid-area: nav; }
+  section { grid-area: section; }
+  article { grid-area: article; }
+  aside   { grid-area: aside; }
+  footer  { grid-area: footer; }
+
+  header {
+    background: linear-gradient(135deg, var(--orange), #fb923c);
+    color: #fff;
+    border-radius: 14px;
+    padding: 36px 20px;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 6px; font-size: 2rem; }
+  header p { margin: 0; font-size: 1.05rem; opacity: .95; }
+
+  nav {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 8px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  nav a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--deep);
+  }
+  nav a:hover { background: var(--sea); }
+
+  section, article, aside {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  h2 { margin: 0 0 14px; font-size: 1.3rem; color: var(--deep); }
+  h3 { margin: 0 0 4px; font-size: 1.05rem; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .item {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    background: #fffdf9;
+  }
+  .item .emoji { font-size: 2rem; }
+  .item p { margin: 0; font-size: .9rem; color: #4b5563; }
+
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  th { background: var(--sea); color: var(--deep); }
+  .note { margin: 12px 0 0; font-size: .85rem; color: #6b7280; }
+
+  aside { background: var(--sea); border-color: #b7e4df; }
+  aside h2 { font-size: 1.15rem; }
+  aside ul { margin: 0 0 18px; padding-left: 18px; }
+  aside li { margin-bottom: 6px; font-size: .92rem; }
+
+  footer {
+    background: #1f2937;
+    color: #d1d5db;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    font-size: .88rem;
+  }
+
+  @media (max-width: 720px) {
+    .page {
+      grid-template-columns: 1fr;
+      grid-template-areas: "header" "nav" "section" "article" "aside" "footer";
+    }
+    header h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>🍊 제주 특산품 이야기 🌴</h1>
+    <p>바다와 한라산이 키운 제주의 맛, 한 번에 만나보세요</p>
+  </header>
+
+  <nav>
+    <a href="#citrus">감귤류</a>
+    <a href="#sea">바다</a>
+    <a href="#land">땅</a>
+    <a href="#season">제철 달력</a>
+    <a href="#tips">여행 팁</a>
+  </nav>
+
+  <section id="citrus">
+    <h2>🍊 대표 특산품 · 감귤류</h2>
+    <div class="grid">
+      <div class="item"><div class="emoji">🍊</div><h3>감귤</h3><p>새콤달콤, 비타민C 가득. 늦가을부터 겨울에 많이 출하돼요.</p></div>
+      <div class="item"><div class="emoji">⛰️</div><h3>한라봉</h3><p>한라산을 닮은 꼭지. 당도가 높고 과육이 부드러워요.</p></div>
+      <div class="item"><div class="emoji">🌸</div><h3>천혜향</h3><p>향이 좋고 껍질이 얇아 즙이 풍부해요.</p></div>
+      <div class="item"><div class="emoji">❤️</div><h3>레드향</h3><p>붉은빛 껍질에 진한 단맛, 선물용으로 인기예요.</p></div>
+      <div class="item"><div class="emoji">✨</div><h3>황금향</h3><p>황금빛 껍질과 은은한 단맛이 매력이에요.</p></div>
+      <div class="item"><div class="emoji">🍋</div><h3>카라향</h3><p>껍질이 얇아 까먹기 쉽고 새콤달콤해요.</p></div>
+    </div>
+  </section>
+
+  <article id="sea">
+    <h2>🐟 바다 · 🐖 땅의 특산품</h2>
+    <div id="land" class="grid">
+      <div class="item"><div class="emoji">🐠</div><h3>옥돔</h3><p>구이나 국으로 먹는 담백한 제주 대표 생선.</p></div>
+      <div class="item"><div class="emoji">🐟</div><h3>갈치</h3><p>은빛 비늘의 갈치조림·갈치구이.</p></div>
+      <div class="item"><div class="emoji">🦑</div><h3>한치</h3><p>여름 밤바다의 주인공, 회와 물회로.</p></div>
+      <div class="item"><div class="emoji">🐚</div><h3>전복·성게</h3><p>해녀가 건져 올린 고소한 바다의 맛.</p></div>
+      <div class="item"><div class="emoji">🐷</div><h3>흑돼지</h3><p>쫄깃하고 고소한 육질의 근고기·오겹살.</p></div>
+      <div class="item"><div class="emoji">🍠</div><h3>고구마·메밀</h3><p>화산토에서 자라 달고 구수해요.</p></div>
+    </div>
+    <div id="season" style="margin-top:20px">
+    <h2>📅 제철 달력</h2>
+    <table>
+      <tr><th>계절</th><th>제철 특산물</th></tr>
+      <tr><td>🌸 봄</td><td>유채꿀, 한라봉(막바지), 성게</td></tr>
+      <tr><td>☀️ 여름</td><td>한치, 애플망고, 갈치</td></tr>
+      <tr><td>🍂 가을</td><td>조생 감귤, 고구마, 메밀</td></tr>
+      <tr><td>❄️ 겨울</td><td>감귤, 한라봉, 천혜향, 당근</td></tr>
+    </table>
+    <p class="note">출하 시기는 해마다 날씨와 재배 방식에 따라 달라질 수 있어요.</p>
+    </div>
+  </article>
+
+  <aside id="tips">
+    <h2>🌦️ 여행 팁</h2>
+    <ul>
+      <li>날씨 변화가 잦아 일기예보를 꼭 확인하세요.</li>
+      <li>바람이 강하니 바람막이를 챙기세요.</li>
+      <li>파도가 높으면 바다 체험이 취소될 수 있어요.</li>
+      <li>자외선이 강하니 선크림은 필수!</li>
+    </ul>
+    <h2>🎡 체험 장소</h2>
+    <ul>
+      <li>🧺 감귤 따기 체험 농장</li>
+      <li>🍵 녹차밭 산책</li>
+      <li>🤿 해녀 문화 체험</li>
+      <li>🥾 오름 트레킹</li>
+      <li>🏮 동문시장 · 올레시장 투어</li>
+    </ul>
+    <h2>🎁 기념품</h2>
+    <ul>
+      <li>감귤 초콜릿 · 쿠키</li>
+      <li>오메기떡 · 오메기술</li>
+      <li>유채꿀 · 감귤 비누</li>
+    </ul>
+  </aside>
+
+
+  <footer>© 2026 제주 특산품 이야기 · 만든 사람: 김재민 · 🍊🌊🌋</footer>
+
+</div>
+</body>
+</html>
