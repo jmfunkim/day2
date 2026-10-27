@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>화면 부품 지도</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px; font-family: sans-serif; background: #fff; color: #222; }
+  h1 { font-size: 1.2rem; margin: 0 0 4px; }
+  p.sub { margin: 0 0 20px; color: #666; font-size: .9rem; }
+
+  /* index.html 화면을 줄여서 옮긴 영역 (오른쪽에 이름표 자리) */
+  .stage { max-width: 640px; margin: 0 auto; padding-right: 90px; }
+  .mini { background: #f4f4f8; border-radius: 10px; overflow: hidden; }
+  .part { position: relative; outline: 2px dashed #e11d48; outline-offset: -2px; }
+  .tag {
+    position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%);
+    white-space: nowrap; background: #e11d48; color: #fff; font-size: .78rem;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .tag.sub { background: #9ca3af; }
+
+  .m-header { background: #4f46e5; color: #fff; padding: 16px; text-align: center; }
+  .m-header b { font-size: 1.1rem; }
+  .m-header div { font-size: .8rem; opacity: .85; }
+  .m-nav { background: #fff; display: flex; justify-content: center; gap: 6px; padding: 8px; border-bottom: 1px solid #e5e5ee; }
+  .m-nav span { padding: 4px 12px; color: #4f46e5; font-weight: bold; font-size: .9rem; }
+  .m-main { padding: 12px; display: grid; gap: 8px; }
+  .m-card { background: #fff; border-radius: 8px; padding: 10px 12px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .m-card h3 { margin: 0 0 4px; font-size: .9rem; color: #4f46e5; }
+  .m-card i { display: block; font-style: normal; color: #888; font-size: .75rem; }
+  .m-like { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .m-like b { font-weight: normal; font-size: .9rem; }
+  .m-btn { position: relative; background: #4f46e5; color: #fff; font-size: .7rem; padding: 3px 8px; border-radius: 5px; outline: 2px dashed #e11d48; outline-offset: 2px; }
+  .m-footer { background: #fff; margin: 4px 12px 12px; padding: 12px; text-align: center; font-size: .75rem; color: #666; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+  h2 { font-size: 1rem; margin: 28px auto 8px; max-width: 640px; }
+  ul.check { list-style: none; padding: 0; margin: 0 auto; max-width: 640px; }
+  ul.check li { padding: 6px 0; border-bottom: 1px solid #eee; }
+  .yes { color: #16a34a; font-weight: bold; }
+  .no { color: #999; }
+</style>
+</head>
+<body>
+  <h1>화면 부품 지도</h1>
+  <p class="sub">index.html("내 취향 카드") 화면의 부품을 찾아 이름표를 붙였습니다. index.html은 수정하지 않았습니다.</p>
+
+  <div class="stage">
+    <div class="mini">
+      <div class="m-header part"><b>🎴 내 취향 카드</b><div>내가 좋아하는 것들을 카드로 모아보세요</div><span class="tag">헤더</span></div>
+      <div class="m-nav part"><span>홈</span><span>음식</span><span>음악</span><span>여행</span><span class="tag">탭 (메뉴 링크 4개)</span></div>
+      <div class="m-main" id="cards"></div>
+      <div class="m-footer part">© 2026 내 취향 카드 · 만든 사람: 김재민<span class="tag sub">푸터</span></div>
+    </div>
+  </div>
+
+  <h2>이름표 6종 확인</h2>
+  <ul class="check">
+    <li><span class="yes">✓ 헤더</span> — 맨 위 파란 영역 1개</li>
+    <li><span class="yes">✓ 카드</span> — 흰 상자 10개 (제주대학교 홍보 카드)</li>
+    <li><span class="no">✗ 버튼</span> — 없음</li>
+    <li><span class="no">✗ 입력창</span> — 없음</li>
+    <li><span class="yes">✓ 탭</span> — 상단 메뉴 링크 4개 (전환 기능은 없어 탭과 비슷한 메뉴)</li>
+    <li><span class="no">✗ 목록</span> — 없음 (카드 안은 &lt;ul&gt; 목록이 아닌 문단 10줄)</li>
+  </ul>
+  <p class="sub" style="max-width:640px;margin:12px auto 0">회색 이름표(푸터)는 요청하신 6종에는 없지만 화면에 있어 함께 표시했습니다. 카드 안의 문구는 줄여서 표시했습니다.</p>
+
+  <script>
+    const titles = ['🌴 제주대학교에 오신 것을 환영합니다','🏫 아름다운 캠퍼스','📚 배움이 있는 곳','🌊 제주만의 특별함','🤝 함께하는 공동체','🌏 세계로 열린 대학','🔬 연구와 혁신','💼 꿈을 향한 진로 지원','🎉 즐거운 대학 생활','🍊 제주대학교에서 만나요'];
+    const box = document.getElementById('cards');
+    titles.forEach((t, i) => {
+      const d = document.createElement('div');
+      d.className = 'm-card part';
+      d.innerHTML = '<h3></h3><i>문단 10줄 …</i><span class="tag">카드 ' + (i + 1) + '</span>';
+      d.querySelector('h3').textContent = t;
+      box.appendChild(d);
+    });
+  </script>
+</body>
+</html>
